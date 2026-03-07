@@ -1,7 +1,15 @@
 import request from "supertest";
 import app from "../src/app.js";
+import * as dbHandler from "./dbHandler.js";
 
 describe("Auth Routes", () => {
+  beforeAll(async () => {
+    await dbHandler.connect();
+  });
+
+  afterAll(async () => {
+    await dbHandler.closeDatabase();
+  });
 
   let token;
 

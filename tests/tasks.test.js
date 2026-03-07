@@ -1,10 +1,13 @@
 import request from "supertest";
 import app from "../src/app.js";
+import * as dbHandler from "./dbHandler.js";
 
 let token;
 let taskId;
 
 beforeAll(async () => {
+  await dbHandler.connect();
+
   // Register
   await request(app)
     .post("/api/auth/register")
@@ -23,6 +26,10 @@ beforeAll(async () => {
     });
 
   token = res.body.token;
+});
+
+afterAll(async () => {
+  await dbHandler.closeDatabase();
 });
 
 describe("Task Routes", () => {
